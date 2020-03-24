@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EntityDescriptor xmlns="urn:oasis:names:tc:SAML:2.0:metadata" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:shibmd="urn:mace:shibboleth:metadata:1.0" xmlns:xml="http://www.w3.org/XML/1998/namespace" xmlns:mdui="urn:oasis:names:tc:SAML:metadata:ui" entityID="http://localhost:8080/saml-idp">
+    <IDPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol urn:oasis:names:tc:SAML:1.1:protocol urn:mace:shibboleth:1.0">
+        <Extensions>
+            <shibmd:Scope regexp="false">org.dev.saml-idp</shibmd:Scope>
+        </Extensions>
+        <KeyDescriptor use="signing">
+            <ds:KeyInfo>
+                <ds:X509Data>
+                    <ds:X509Certificate>MIID+zCCAuOgAwIBAgIBEjANBgkqhkiG9w0BAQsFADCBiDELMAkGA1UEBhMCSVQxETAPBgNVBAgT CENhbXBhbmlhMQ8wDQYDVQQHEwZOYXBvbGkxDDAKBgNVBAoTA0NOUjENMAsGA1UECxMESUNBUjEZ MBcGA1UEAxMQRlNFIFJPT1QgQ0EgVEVTVDEdMBsGCSqGSIb3DQEJARYObm9yZXBseUBjbnIuaXQw HhcNMTYwMjA4MDAwMDAwWhcNMzUxMjE3MjM1OTU5WjCBlzELMAkGA1UEBhMCSVQxDjAMBgNVBAgT BUxhemlvMQ0wCwYDVQQHEwRSb21hMRYwFAYDVQQKEw1SZWdpb25lIExhemlvMRYwFAYDVQQLEw1S ZWdpb25lIExhemlvMRAwDgYDVQQDEwdGU0UgTEFaMScwJQYJKoZIhvcNAQkBFhhub3JlcGx5QHJl Z2lvbmUubGF6aW8uaXQwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCquIPCj64y90SZ p0r+KTip+TxHNHQkKIEKvScc4Seo02t/6U6r4Q14quc4K2gnvzlvPRV/Ly2VrKEVJOL5JFJ8vwjn JICX1KEuh+OqBRotNO9BAp1Zh8Roxb82Y+5Ce8eXdgicbeFPQ173TXIDaf+g+Rou+FGGShycjngG m1oQXw4tEnP/FVZpjstF9fy7jwaG2UnZX+9jxJZtNxlXj03Io8Ug5NVEiOMZ5/tqN9q33SYcYYd/ gh0QRlXPjvwT6fhNyxB0zevGBJcENkgshYxPXO9p/jEpx5ifUZZsXNEMZrIb9db21wWPDaKhN4Ir +MpZtdU6eNIB/QGwoaMuJ5ADAgMBAAGjXzBdMAwGA1UdEwEB/wQCMAAwHQYDVR0OBBYEFBPo4oLk mH66i7Q6Jb2NqyGNMXXEMA4GA1UdDwEB/wQEAwIF4DAeBglghkgBhvhCAQ0EERYPeGNhIGNlcnRp ZmljYXRlMA0GCSqGSIb3DQEBCwUAA4IBAQCU8QdtsFyAOlo/736P7lUF8KZbTQnD+hhxJHK0OVSz dIJlH7wIMncW86h652dNHfDf4W0IwEASiz6mv4z6hG51KG7wPLGaqXQp8y42OjMq88iieBmNkluJ 1Agnokw7N/bIoFvgpvb+3l/YKK5OqDzXyz46YmDbehrempoBYDK4mPlS4GAXfQ0nqItxD3RCkRUB h1+JUx+Dvc9UC+P0oU3ZjoAfp+wNletWGStXqHvRKjut7lwz8Ifh8BBkoSYBnkq6hgRIePiizROf KCKp9hIfR5C1xiPaeGqcNJfAyGgLFTlmrMCRZvptNMpR3ZOyYrn9XzVDON4Ox5Ri4O50GSMI</ds:X509Certificate>
+                </ds:X509Data>
+            </ds:KeyInfo>
+        </KeyDescriptor>
+        <KeyDescriptor use="encryption">
+            <ds:KeyInfo>
+                <ds:X509Data>
+                    <ds:X509Certificate>MIID+zCCAuOgAwIBAgIBEjANBgkqhkiG9w0BAQsFADCBiDELMAkGA1UEBhMCSVQxETAPBgNVBAgT CENhbXBhbmlhMQ8wDQYDVQQHEwZOYXBvbGkxDDAKBgNVBAoTA0NOUjENMAsGA1UECxMESUNBUjEZ MBcGA1UEAxMQRlNFIFJPT1QgQ0EgVEVTVDEdMBsGCSqGSIb3DQEJARYObm9yZXBseUBjbnIuaXQw HhcNMTYwMjA4MDAwMDAwWhcNMzUxMjE3MjM1OTU5WjCBlzELMAkGA1UEBhMCSVQxDjAMBgNVBAgT BUxhemlvMQ0wCwYDVQQHEwRSb21hMRYwFAYDVQQKEw1SZWdpb25lIExhemlvMRYwFAYDVQQLEw1S ZWdpb25lIExhemlvMRAwDgYDVQQDEwdGU0UgTEFaMScwJQYJKoZIhvcNAQkBFhhub3JlcGx5QHJl Z2lvbmUubGF6aW8uaXQwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCquIPCj64y90SZ p0r+KTip+TxHNHQkKIEKvScc4Seo02t/6U6r4Q14quc4K2gnvzlvPRV/Ly2VrKEVJOL5JFJ8vwjn JICX1KEuh+OqBRotNO9BAp1Zh8Roxb82Y+5Ce8eXdgicbeFPQ173TXIDaf+g+Rou+FGGShycjngG m1oQXw4tEnP/FVZpjstF9fy7jwaG2UnZX+9jxJZtNxlXj03Io8Ug5NVEiOMZ5/tqN9q33SYcYYd/ gh0QRlXPjvwT6fhNyxB0zevGBJcENkgshYxPXO9p/jEpx5ifUZZsXNEMZrIb9db21wWPDaKhN4Ir +MpZtdU6eNIB/QGwoaMuJ5ADAgMBAAGjXzBdMAwGA1UdEwEB/wQCMAAwHQYDVR0OBBYEFBPo4oLk mH66i7Q6Jb2NqyGNMXXEMA4GA1UdDwEB/wQEAwIF4DAeBglghkgBhvhCAQ0EERYPeGNhIGNlcnRp ZmljYXRlMA0GCSqGSIb3DQEBCwUAA4IBAQCU8QdtsFyAOlo/736P7lUF8KZbTQnD+hhxJHK0OVSz dIJlH7wIMncW86h652dNHfDf4W0IwEASiz6mv4z6hG51KG7wPLGaqXQp8y42OjMq88iieBmNkluJ 1Agnokw7N/bIoFvgpvb+3l/YKK5OqDzXyz46YmDbehrempoBYDK4mPlS4GAXfQ0nqItxD3RCkRUB h1+JUx+Dvc9UC+P0oU3ZjoAfp+wNletWGStXqHvRKjut7lwz8Ifh8BBkoSYBnkq6hgRIePiizROf KCKp9hIfR5C1xiPaeGqcNJfAyGgLFTlmrMCRZvptNMpR3ZOyYrn9XzVDON4Ox5Ri4O50GSMI</ds:X509Certificate>
+                </ds:X509Data>
+            </ds:KeyInfo>
+        </KeyDescriptor>
+        
+        <SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="http://localhost:8080/saml-idp/SAML2/POST/SLO"/>
+        <SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="http://localhost:8080/saml-idp/SAML2/Redirect/SLO"/>
+        
+        <NameIDFormat>urn:mace:shibboleth:1.0:nameIdentifier</NameIDFormat>
+        <NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</NameIDFormat>
+        
+        <SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="http://localhost:8080/saml-idp/SAML2/POST/SSO"/>
+        <SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="http://localhost:8080/saml-idp/SAML2/Redirect/SSO"/>
+    </IDPSSODescriptor>
+</EntityDescriptor>
