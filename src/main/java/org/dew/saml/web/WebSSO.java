@@ -162,10 +162,10 @@ class WebSSO extends HttpServlet
     if(ex != null) {
       ByteArrayOutputStream baos = new ByteArrayOutputStream();
       ex.printStackTrace(new PrintStream(baos));
-      sMessage = new String(baos.toByteArray()).replace("\n", "<br>");
+      sMessage = new String(baos.toByteArray());
     }
     response.setContentType("text/html");
     PrintWriter out = response.getWriter();
-    out.println("<html><body>" + sMessage.replace("<", "&lt;").replace(">", "&gt;") + "</body></html>");
+    out.println("<html><body>" + sMessage.replace("<", "&lt;").replace(">", "&gt;").replace("\n", "<br>") + "</body></html>");
   }
 }
