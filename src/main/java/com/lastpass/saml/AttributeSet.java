@@ -33,8 +33,7 @@ public class AttributeSet
     private Map<String, List<String>> attributes;
     
     // [dew]
-    public AttributeSet(String nameId, String requestId,
-                        Map<String, List<String>> attributes)
+    public AttributeSet(String nameId, String requestId, Map<String, List<String>> attributes)
     {
         this.nameId = nameId;
         this.requestId = requestId;

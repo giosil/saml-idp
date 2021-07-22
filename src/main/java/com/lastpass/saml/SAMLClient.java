@@ -156,7 +156,7 @@ public class SAMLClient
     parsers.setNamespaceAware(true);
   }
   
-  // [ISED]
+  // [dew]
   public static SAMLClient getInstance()
       throws Exception
   {
@@ -280,12 +280,10 @@ public class SAMLClient
     
     if (issueInstant != null) {
       if (issueInstant.isBefore(now.minusSeconds(24 * 60 * 60)))
-        throw new ValidationException(
-            "Response IssueInstant (" + issueInstant + ") is in the past (" + now.minusSeconds(24 * 60 * 60) + ")");
+        throw new ValidationException("Response IssueInstant (" + issueInstant + ") is in the past (" + now.minusSeconds(24 * 60 * 60) + ")");
       
       if (issueInstant.isAfter(now.plusSeconds(24 * 60 * 60)))
-        throw new ValidationException(
-            "Response IssueInstant (" + issueInstant + ") is in the future (" + now.plusSeconds(24 * 60 * 60) + ")");
+        throw new ValidationException("Response IssueInstant (" + issueInstant + ") is in the future (" + now.plusSeconds(24 * 60 * 60) + ")");
     }
     
     List<Assertion> assertions = null;
@@ -309,8 +307,7 @@ public class SAMLClient
       // Assertion must contain an authnstatement
       // with an unexpired session
       if (assertion.getAuthnStatements().isEmpty()) {
-        throw new ValidationException(
-            "Assertion should contain an AuthnStatement");
+        throw new ValidationException("Assertion should contain an AuthnStatement");
       }
       for (AuthnStatement as: assertion.getAuthnStatements()) {
         DateTime sessionTime = as.getSessionNotOnOrAfter();
@@ -318,26 +315,22 @@ public class SAMLClient
           DateTime exp = sessionTime.plusSeconds(slack);
           if (exp != null &&
               (now.isEqual(exp) || now.isAfter(exp)))
-            throw new ValidationException(
-                "AuthnStatement has expired");
+            throw new ValidationException("AuthnStatement has expired");
         }
       }
       
       if (assertion.getConditions() == null) {
-        throw new ValidationException(
-            "Assertion should contain conditions");
+        throw new ValidationException("Assertion should contain conditions");
       }
       
       // Assertion IssueInstant must be within a day
       DateTime instant = assertion.getIssueInstant();
       if (instant != null) {
         if (instant.isBefore(now.minusSeconds(slack)))
-          throw new ValidationException(
-              "Response IssueInstant is in the past");
+          throw new ValidationException("Response IssueInstant is in the past");
         
         if (instant.isAfter(now.plusSeconds(slack)))
-          throw new ValidationException(
-              "Response IssueInstant is in the future");
+          throw new ValidationException("Response IssueInstant is in the future");
       }
       
       // Conditions must be met by current time
@@ -346,19 +339,16 @@ public class SAMLClient
       DateTime notOnOrAfter = conditions.getNotOnOrAfter();
       
       if (notBefore == null || notOnOrAfter == null)
-        throw new ValidationException(
-            "Assertion conditions must have limits");
+        throw new ValidationException("Assertion conditions must have limits");
       
       notBefore = notBefore.minusSeconds(slack);
       notOnOrAfter = notOnOrAfter.plusSeconds(slack);
       
       if (now.isBefore(notBefore))
-        throw new ValidationException(
-            "Assertion conditions is in the future");
+        throw new ValidationException("Assertion conditions is in the future");
       
       if (now.isEqual(notOnOrAfter) || now.isAfter(notOnOrAfter))
-        throw new ValidationException(
-            "Assertion conditions is in the past");
+        throw new ValidationException("Assertion conditions is in the past");
       
       // If subjectConfirmationData is included, it must
       // have a recipient that matches ACS, with a valid
@@ -375,8 +365,7 @@ public class SAMLClient
           if (scd.getNotOnOrAfter() != null) {
             DateTime chkdate = scd.getNotOnOrAfter().plusSeconds(slack);
             if (now.isEqual(chkdate) || now.isAfter(chkdate)) {
-              throw new ValidationException(
-                  "SubjectConfirmationData is in the past");
+              throw new ValidationException("SubjectConfirmationData is in the past");
             }
           }
           // [dew]
@@ -386,23 +375,19 @@ public class SAMLClient
         }
         
         if (!foundRecipient)
-          throw new ValidationException(
-              "No SubjectConfirmationData found for ACS");
+          throw new ValidationException("No SubjectConfirmationData found for ACS");
       }
       
       // audience must include intended SP issuer
       if (conditions.getAudienceRestrictions().isEmpty())
-        throw new ValidationException(
-            "Assertion conditions must have audience restrictions");
+        throw new ValidationException("Assertion conditions must have audience restrictions");
       
       // only one audience restriction supported: we can only
       // check against the single SP.
       if (conditions.getAudienceRestrictions().size() > 1)
-        throw new ValidationException(
-            "Assertion contains multiple audience restrictions");
+        throw new ValidationException("Assertion contains multiple audience restrictions");
       
-      AudienceRestriction ar = conditions.getAudienceRestrictions()
-          .get(0);
+      AudienceRestriction ar = conditions.getAudienceRestrictions().get(0);
       
       // at least one of the audiences must match our SP
       boolean foundSP = false;
@@ -411,8 +396,7 @@ public class SAMLClient
           foundSP = true;
       }
       if (!foundSP)
-        throw new ValidationException(
-            "Assertion audience does not include issuer");
+        throw new ValidationException("Assertion audience does not include issuer");
     }
   }
   
@@ -497,8 +481,7 @@ public class SAMLClient
       byte[] compressed = deflate(request.getBytes("UTF-8"));
       return DatatypeConverter.printBase64Binary(compressed);
     } catch (UnsupportedEncodingException e) {
-      throw new SAMLException(
-          "Apparently your platform lacks UTF-8.  That's too bad.", e);
+      throw new SAMLException("Apparently your platform lacks UTF-8.  That's too bad.", e);
     } catch (IOException e) {
       throw new SAMLException("Unable to compress the AuthnRequest", e);
     }
@@ -540,15 +523,13 @@ public class SAMLClient
     
     // we only look at first assertion
     if (assertions.size() != 1) {
-      throw new SAMLException(
-          "Response should have a single assertion.");
+      throw new SAMLException("Response should have a single assertion.");
     }
     Assertion assertion = assertions.get(0);
     
     Subject subject = assertion.getSubject();
     if (subject == null) {
-      throw new SAMLException(
-          "No subject contained in the assertion.");
+      throw new SAMLException("No subject contained in the assertion.");
     }
     if (subject.getNameID() == null) {
       throw new SAMLException("No NameID found in the subject.");
@@ -571,7 +552,7 @@ public class SAMLClient
     }
     
     // [dew]
-        return new AttributeSet(nameId, response.getInResponseTo(), attributes);
+    return new AttributeSet(nameId, response.getInResponseTo(), attributes);
   }
   
   // [dew]
