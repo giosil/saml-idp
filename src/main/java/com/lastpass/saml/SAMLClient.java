@@ -168,6 +168,20 @@ public class SAMLClient
     return _instance;
   }
   
+  // [dew]
+  public static SAMLClient getInstance(String host)
+      throws Exception
+  {
+    if(_instance != null) return _instance;
+    SAMLInit.initialize();
+    IdPConfig _idpConfig = new IdPConfig(Thread.currentThread().getContextClassLoader().getResourceAsStream("idp-metadata.xml"));
+    SPConfig  _spConfig  = new SPConfig(Thread.currentThread().getContextClassLoader().getResourceAsStream("sp-metadata.xml"));
+    _idpConfig.setHost(host);
+    _spConfig.setHost(host);
+    _instance = new SAMLClient(_spConfig, _idpConfig);
+    return _instance;
+  }
+  
   /**
    * Get the configured IdpConfig.
    *
@@ -224,10 +238,8 @@ public class SAMLClient
       throw new DecryptionException("Encrypted assertion found but no SP key available");
     BasicCredential cred = new BasicCredential();
     cred.setPrivateKey(spConfig.getPrivateKey());
-    StaticKeyInfoCredentialResolver resolver =
-        new StaticKeyInfoCredentialResolver(cred);
-    Decrypter decrypter =
-        new Decrypter(null, resolver, new InlineEncryptedKeyResolver());
+    StaticKeyInfoCredentialResolver resolver = new StaticKeyInfoCredentialResolver(cred);
+    Decrypter decrypter = new Decrypter(null, resolver, new InlineEncryptedKeyResolver());
     decrypter.setRootInNewDocument(true);
     
     return decrypter.decrypt(encrypted);
@@ -261,8 +273,7 @@ public class SAMLClient
     // response must be successful
     if (response.getStatus() == null ||
         response.getStatus().getStatusCode() == null ||
-        !(StatusCode.SUCCESS_URI
-            .equals(response.getStatus().getStatusCode().getValue()))) {
+        !(StatusCode.SUCCESS_URI.equals(response.getStatus().getStatusCode().getValue()))) {
       throw new ValidationException(
           "Response has an unsuccessful status code");
     }

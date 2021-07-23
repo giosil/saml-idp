@@ -141,4 +141,24 @@ class SAMLUtils
     }
     return sYear + "-" + sMonth + "-" + sDay + "T" + sHour + ":" + sMin + ":" + sSec + "Z";
   }
+  
+  public static 
+  String replaceHost(String url, String host) {
+    if(host == null || host.length() == 0) {
+      return url;
+    }
+    int sepCtx = url.indexOf('/', 8);
+    if(sepCtx < 0) return url;
+    int sepCtxHost = host.indexOf('/', 8);
+    if(sepCtxHost > 0) {
+      host = host.substring(0, sepCtxHost);
+    }
+    if(host.startsWith("http://") || host.startsWith("https://")) {
+      return host + url.substring(sepCtx);
+    }
+    if(url.startsWith("https://")) {
+      return "https://" + host + url.substring(sepCtx);
+    }
+    return "http://" + host + url.substring(sepCtx);
+  }
 }

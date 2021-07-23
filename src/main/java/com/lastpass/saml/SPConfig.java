@@ -50,6 +50,9 @@ class SPConfig
   /** Private key used for decrypting assertions */
   private PrivateKey privateKey;
   
+  /** Host to replace in ACS URL*/
+  private String host;
+  
   /**
    * Construct a new, empty SPConfig.
    */
@@ -62,8 +65,7 @@ class SPConfig
    *
    * @param metadataFile File where the metadata lives
    *
-   * @throws SAMLException if an error condition occurs while trying to parse and process
-   *              the metadata
+   * @throws SAMLException if an error condition occurs while trying to parse and process the metadata
    */
   public SPConfig(File metadataFile)
       throws SAMLException
@@ -93,8 +95,7 @@ class SPConfig
    *
    * @param inputStream  An input stream containing a metadata XML document
    *
-   * @throws SAMLException if an error condition occurs while trying to parse and process
-   *              the metadata
+   * @throws SAMLException if an error condition occurs while trying to parse and process the metadata
    */
   public SPConfig(InputStream inputStream)
       throws SAMLException
@@ -114,8 +115,7 @@ class SPConfig
       Document doc = parsers.parse(inputStream);
       Element root = doc.getDocumentElement();
       
-      UnmarshallerFactory unmarshallerFactory =
-          Configuration.getUnmarshallerFactory();
+      UnmarshallerFactory unmarshallerFactory = Configuration.getUnmarshallerFactory();
       
       edesc = (EntityDescriptor) unmarshallerFactory
           .getUnmarshaller(root)
@@ -129,8 +129,7 @@ class SPConfig
     }
     
     // fetch sp information
-    SPSSODescriptor spDesc = edesc.getSPSSODescriptor(
-        "urn:oasis:names:tc:SAML:2.0:protocol");
+    SPSSODescriptor spDesc = edesc.getSPSSODescriptor("urn:oasis:names:tc:SAML:2.0:protocol");
     
     if (spDesc == null)
       throw new SAMLException("No SP SSO descriptor found");
@@ -165,12 +164,16 @@ class SPConfig
    */
   public String getEntityId()
   {
+    if(host != null && host.length() > 0) {
+      if(entityId != null && entityId.startsWith("http")) {
+        return SAMLUtils.replaceHost(entityId, host);
+      }
+    }
     return this.entityId;
   }
   
   /**
-   * Set the SP ACS URL.  Auth responses are posted
-   * here.
+   * Set the SP ACS URL.  Auth responses are posted here.
    */
   public void setAcs(String acs)
   {
@@ -182,6 +185,9 @@ class SPConfig
    */
   public String getAcs()
   {
+    if(host != null && host.length() > 0) {
+      return SAMLUtils.replaceHost(acs, host);
+    }
     return this.acs;
   }
   
@@ -199,5 +205,22 @@ class SPConfig
   public PrivateKey getPrivateKey()
   {
     return this.privateKey;
+  }
+  
+
+  /**
+   * Set the replace host of ACS URL.
+   */
+  public void setHost(String host)
+  {
+    this.host = host;
+  }
+
+  /**
+   * Get the replace host of ACS URL.
+   */
+  public String getHost()
+  {
+    return this.host;
   }
 }

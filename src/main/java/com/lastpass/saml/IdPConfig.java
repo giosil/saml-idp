@@ -209,6 +209,9 @@ public class IdPConfig
   /** Certificate used to validate assertions */
   private Certificate cert;
 
+  /** Host to replace in login URL and logout URL*/
+  private String host;
+
   /**
    * Set the Idp Entity Id.
    */
@@ -240,6 +243,9 @@ public class IdPConfig
    */
   public String getLoginUrl()
   {
+    if(host != null && host.length() > 0) {
+      return SAMLUtils.replaceHost(loginUrl, host);
+    }
     return this.loginUrl;
   }
 
@@ -277,6 +283,25 @@ public class IdPConfig
    */
   public String getLogoutUrl()
   {
+    if(host != null && host.length() > 0) {
+      return SAMLUtils.replaceHost(loginUrl, host);
+    }
     return this.logoutUrl;
+  }
+
+  /**
+   * Set the replace host of login URL and logout URL.
+   */
+  public void setHost(String host)
+  {
+    this.host = host;
+  }
+
+  /**
+   * Get the replace host of login URL and logout URL.
+   */
+  public String getHost()
+  {
+    return this.host;
   }
 }
