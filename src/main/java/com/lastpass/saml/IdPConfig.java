@@ -284,7 +284,7 @@ public class IdPConfig
   public String getLogoutUrl()
   {
     if(host != null && host.length() > 0) {
-      return SAMLUtils.replaceHost(loginUrl, host);
+      return SAMLUtils.replaceHost(logoutUrl, host);
     }
     return this.logoutUrl;
   }
