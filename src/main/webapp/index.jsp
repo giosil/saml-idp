@@ -6,10 +6,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>saml-idp</title>
+  <title>SAML Identity Provider</title>
 </head>
 <body>
-  <h3>saml-idp</h3>
+  <h3>SAML Identity Provider </h3>
   <% if(username != null) { %>
   <b>Username: </b><%= username %>
   <% } else { %>
