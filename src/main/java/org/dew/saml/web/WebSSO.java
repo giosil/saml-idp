@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import org.opensaml.saml2.core.AuthnRequest;
 
 import com.lastpass.saml.SAMLIdP;
+import com.lastpass.saml.SAMLUtils;
 
 public
 class WebSSO extends HttpServlet
@@ -33,12 +34,17 @@ class WebSSO extends HttpServlet
   void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException
   {
-    String sRelayState     = request.getParameter("RelayState");
+    String relayState      = request.getParameter("RelayState");
     String sB64SAMLRequest = request.getParameter("SAMLRequest");
     if(sB64SAMLRequest == null || sB64SAMLRequest.length() == 0) {
       sendMessage(request, response, "NO SAMLRequest");
       return;
     }
+    
+    // CWE-79 Improper Neutralization of Input During Web Page Generation (Cross-site Scripting)
+    // WASC-8 Cross Site Scripting
+    sB64SAMLRequest = SAMLUtils.escapeHtml(sB64SAMLRequest);
+    relayState      = SAMLUtils.escapeHtml(relayState);
     
     SAMLIdP samlIdP = null;
     try {
@@ -94,13 +100,13 @@ class WebSSO extends HttpServlet
           return;
         }
         
-        if(sRelayState == null || sRelayState.length() == 0) sRelayState = sEntityId;
+        if(relayState == null || relayState.length() == 0) relayState = sEntityId;
         
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         if(DEBUG) {
           out.println("<html><body>");
-          out.println("<b>RelayState:</b>: " + sRelayState + " <br>");
+          out.println("<b>RelayState:</b>: " + relayState + " <br>");
           out.println("<b>SAMLResponse:</b>:<br><br>");
           try {
             out.println(samlIdP.checkResponse(samlReponse).replace("<", "&lt;").replace(">", "&gt;"));
@@ -115,7 +121,7 @@ class WebSSO extends HttpServlet
           out.println("<html><body onload=\"document.forms[0].submit()\">");
         }
         out.println("<form method=\"POST\" action=\"" + sACS + "\">");
-        out.println("<input type=\"hidden\" name=\"RelayState\" value=\"" + sRelayState + "\">");
+        out.println("<input type=\"hidden\" name=\"RelayState\" value=\"" + relayState + "\">");
         out.println("<input type=\"hidden\" name=\"SAMLResponse\" value=\"" + samlReponse + "\">");
         if(DEBUG) {
           out.println("<input type=\"submit\" value=\"Invia\">");
@@ -132,7 +138,7 @@ class WebSSO extends HttpServlet
     out.println("Username:<br><input type=\"text\" name=\"username\"><br>");
     out.println("Password:<br><input type=\"text\" name=\"password\"><br><br>");
     out.println("<input type=\"hidden\" name=\"SAMLRequest\" value=\"" + sB64SAMLRequest + "\">");
-    out.println("<input type=\"hidden\" name=\"RelayState\" value=\"" + sRelayState + "\">");
+    out.println("<input type=\"hidden\" name=\"RelayState\" value=\"" + relayState + "\">");
     out.println("<input type=\"submit\" value=\"Accedi\">");
     out.println("</form>");
     out.println("<hr>");
@@ -145,7 +151,7 @@ class WebSSO extends HttpServlet
     out.println("<b>AssertionConsumerServiceURL:</b> " + sACS + "<br>");
     out.println("<b>Request Id:</b> " + sReqId + "<br>");
     out.println("<b>Issuer Id:</b> " + sEntityId + "<br><br>");
-    out.println("<b>RelayState:</b> " + sRelayState + "<br>");
+    out.println("<b>RelayState:</b> " + relayState + "<br>");
     out.println("</body></html>");
   }
   

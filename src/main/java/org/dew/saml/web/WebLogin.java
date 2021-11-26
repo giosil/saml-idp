@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import org.opensaml.saml2.core.AuthnRequest;
 
 import com.lastpass.saml.SAMLIdP;
+import com.lastpass.saml.SAMLUtils;
 
 public
 class WebLogin extends HttpServlet
@@ -48,6 +49,12 @@ class WebLogin extends HttpServlet
       sendMessage(request, response, "Invalid SAMLRequest");
       return;
     }
+    
+    // CWE-79 Improper Neutralization of Input During Web Page Generation (Cross-site Scripting)
+    // WASC-8 Cross Site Scripting
+    username    = SAMLUtils.escapeHtml(username);
+    samlRequest = SAMLUtils.escapeHtml(samlRequest);
+    relayState  = SAMLUtils.escapeHtml(relayState);
     
     // TODO: login
     

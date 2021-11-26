@@ -161,4 +161,29 @@ class SAMLUtils
     }
     return "http://" + host + url.substring(sepCtx);
   }
+  
+  public static
+  String escapeHtml(String text)
+  {
+    if(text == null) return "";
+    int iLength = text.length();
+    if(iLength == 0) return "";
+    StringBuffer sb = new StringBuffer(iLength);
+    for(int i = 0; i < iLength; i++) {
+      char c = text.charAt(i);
+      if(c == '<')  sb.append("&lt;");   else
+      if(c == '>')  sb.append("&gt;");   else
+      if(c == '&')  sb.append("&amp;");  else
+      if(c == '"')  sb.append("&quot;"); else
+      if(c == '\'') sb.append("&apos;"); else
+      if(c > 127) {
+        int code = (int) c;
+        sb.append("&#" + code + ";");
+      }
+      else {
+        sb.append(c);
+      }
+    }
+    return sb.toString();
+  }
 }
